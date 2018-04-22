@@ -23,10 +23,10 @@ public class WebController {
 	@Autowired
 	EmployeeRepository repository;
 	
-	@RequestMapping("/save")
+	@RequestMapping("/seed")
 	public String process(){
-		repository.saveAll(Arrays.asList(new Employee("Alex", "Behrman", "alex@gmail.com"), new Employee("Emily", "Davitt", "emily@gmail.com"),
-										new Employee("Cal", "Notman", "cal@gmail.com"), new Employee("Shashank", "Singh", "shashank@gmail.com")));
+		repository.saveAll(Arrays.asList(new Employee("Alex", "Behrman", "alex@email.com"), new Employee("Emily", "Davitt", "emily@email.com"),
+										new Employee("Cal", "Notman", "cal@email.com"), new Employee("Shashank", "Singh", "shashank@email.com")));
 		return "Done";
 	}
 	
