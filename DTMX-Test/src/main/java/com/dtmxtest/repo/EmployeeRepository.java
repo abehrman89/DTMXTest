@@ -6,5 +6,4 @@ import com.dtmxtest.model.Employee;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long>{
 	Employee findByLastName(String lastName);
-	Employee deleteByLastName(String lastName);
 }
