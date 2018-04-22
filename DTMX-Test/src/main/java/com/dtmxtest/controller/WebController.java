@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dtmxtest.model.Employee;
 import com.dtmxtest.repo.EmployeeRepository;
 
-
 @RestController
 public class WebController {
 	@Autowired
@@ -61,6 +60,10 @@ public class WebController {
      */
     @PostMapping("/")
     public Employee createEmployee(@RequestBody Employee e) {
+    	if (e.getLastName() == null) {
+    		throw new IllegalArgumentException("Last name cannot be empty");
+    	}
+    	
 		Employee e2 = new Employee(e.getFirstName(), e.getLastName(), e.getEmail());
 		repository.save(e2);
     	return e2;
@@ -107,6 +110,16 @@ public class WebController {
     	
 		repository.delete(e4);
 		return "Employee " + e4.getFirstName() + " " + e4.getLastName() + " deleted";
+    }
+    
+    /**
+     * delete entire repository
+     * @return string confirming deletion
+     */
+    @DeleteMapping("/all")
+    public String deleteAll() {
+    	repository.deleteAll();
+    	return "Repository deleted";
     }
 	
 }
