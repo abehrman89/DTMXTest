@@ -33,6 +33,14 @@ public class Employee {
 		this.email = email;
 	}
 	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public String getFirstName() {
 		return this.firstName;
 	}
@@ -47,13 +55,5 @@ public class Employee {
 	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-	
-	public String getEmail() {
-		return this.email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
 	}
 }

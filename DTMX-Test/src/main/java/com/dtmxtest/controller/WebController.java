@@ -30,7 +30,7 @@ public class WebController {
 	}
 	
 	/**
-	 * get list of all employees form db
+	 * get list of all employees from db
 	 * @return elist object
 	 */
 	@GetMapping("/")
