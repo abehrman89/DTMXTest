@@ -2,7 +2,6 @@ package com.dtmxtest.controller;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +21,7 @@ public class WebController {
 	@Autowired
 	EmployeeRepository repository;
 	
-	@RequestMapping("/seed")
+	@RequestMapping("/employees/seed")
 	public String process(){
 		repository.saveAll(Arrays.asList(new Employee("Alex", "Behrman", "alex@email.com"), new Employee("Emily", "Davitt", "emily@email.com"),
 										new Employee("Cal", "Notman", "cal@email.com"), new Employee("Shashank", "Singh", "shashank@email.com")));
@@ -33,37 +32,33 @@ public class WebController {
 	 * get list of all employees from db
 	 * @return elist object
 	 */
-	@GetMapping("/")
+	@GetMapping("/employees")
 	public List<Employee> getAll() {
 		List<Employee> elist = (List<Employee>) repository.findAll();
 		return elist;
 	}
     
 	/**
-	 * get specific employee from db by last name
-	 * @param lastName
+	 * get specific employee
+	 * @param id
 	 * @return employee object
 	 */
-    @GetMapping("/{lastName}")
-    public Employee getByLastName(@PathVariable String lastName) {
-    	Employee e1 = repository.findByLastName(lastName);
+	@GetMapping("/employees/{id}")
+	public Employee getById(@PathVariable Long id) {
+		Employee e1 = repository.getById(id);
     	if (e1 == null) {
-    		throw new NoSuchElementException("No employee with that last name to get");
+    		throw new IllegalArgumentException("No employee with that id");
     	}
-    	return e1;
-    }
+		return e1;
+	}
     
     /**
      * add new employee to db
      * @param e
      * @return new employee object
      */
-    @PostMapping("/")
+    @PostMapping("/employees")
     public Employee createEmployee(@RequestBody Employee e) {
-    	if (e.getLastName() == null) {
-    		throw new IllegalArgumentException("Last name cannot be empty");
-    	}
-    	
 		Employee e2 = new Employee(e.getFirstName(), e.getLastName(), e.getEmail());
 		repository.save(e2);
     	return e2;
@@ -75,11 +70,11 @@ public class WebController {
      * @param e
      * @return updated employee object
      */
-    @PutMapping("/{lastName}")
-    public Employee updateEmployee(@PathVariable String lastName, @RequestBody Employee e) {
-    	Employee e3 = repository.findByLastName(lastName);
+    @PutMapping("/employees/{id}")
+    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee e) {
+    	Employee e3 = repository.getById(id);
     	if (e3 == null) {
-    		throw new NoSuchElementException("No employee with that last name to update");
+    		throw new IllegalArgumentException("No employee with that id");
     	}
     	
     	if (e.getFirstName() != null) {
@@ -101,11 +96,11 @@ public class WebController {
      * @param lastName
      * @return string confirming employee deletion
      */
-    @DeleteMapping("/{lastName}")
-    public String deleteEmployee(@PathVariable String lastName) {
-		Employee e4 = repository.findByLastName(lastName);
+    @DeleteMapping("/employees/{id}")
+    public String deleteEmployee(@PathVariable Long id) {
+		Employee e4 = repository.getById(id);
     	if (e4 == null) {
-    		throw new NoSuchElementException("No employee with that last name to delete");
+    		throw new IllegalArgumentException("No employee with that id");
     	}
     	
 		repository.delete(e4);
@@ -116,7 +111,7 @@ public class WebController {
      * delete entire repository
      * @return string confirming deletion
      */
-    @DeleteMapping("/all")
+    @DeleteMapping("/employees/all")
     public String deleteAll() {
     	repository.deleteAll();
     	return "Repository deleted";
